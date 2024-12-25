@@ -1,10 +1,10 @@
 # Sample workflow to access AWS resources when workflow is tied to branch
 # The workflow Creates static website using aws s3
-name: Deploy Web Staging
+name: Deploy Web Production
 on:
   push:
     branches:
-    - deploy_staging
+    - main
 env:
   AWS_REGION : "us-east-1"
   ASSUME_ROLE: "arn:aws:iam::982534355639:role/GitHubAction-AssumeRoleWithAction"
