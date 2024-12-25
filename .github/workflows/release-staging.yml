@@ -53,4 +53,4 @@ jobs:
       
       - name: Deploy to s3
         run: |
-          aws s3 sync dist s3://${{ env.S3_HOST_BUCKET }}/ --quiet
+          aws s3 sync www s3://${{ env.S3_HOST_BUCKET }}/ --quiet
