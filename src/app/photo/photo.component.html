@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="close()" text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Select image</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="add()">Add</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ng-container  *ngIf="isLimited">
+    <div class="list-image" >
+      <ion-grid>
+        <ion-row>
+          <ion-col class="square-col" size="4" *ngFor="let photo of photos">
+            <ion-card>
+              <ion-img [src]="photo.webPath"></ion-img>
+              <ion-button fill="clear">
+                <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-card>
+          </ion-col>
+          <ion-col class="square-col" size="4">
+            <ion-card class="addnew" (click)="pickLimitedLibraryPhotos()">
+              <ion-icon name="add-outline"></ion-icon>
+              <ion-label>Add new</ion-label>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="note" (click)="setting()">
+      Chúng tôi chỉ có thể truy cập ảnh đã chọn. Chỉnh sửa quyền truy cập
+    </div>
+  </ng-container>
+  <ng-container  *ngIf="isDenied">
+    <div class="note">
+      <ion-label>Chúng tôi không thể truy cập thư viện ảnh</ion-label>
+      <ion-button (click)="setting()">
+        Cài đặt
+      </ion-button>
+    </div>
+  </ng-container>
+</ion-content>

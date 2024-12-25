@@ -1,0 +1,36 @@
+
+ion-grid {
+    width: 100%;
+    ion-col {
+        // background-color: yellow;
+        // position: relative;
+        // padding-top: 100%; /* Tạo tỷ lệ hình vuông */
+        // ion-img {
+        //     position: absolute;
+        //     top: 0;
+        //     left: 0;
+        //     width: 100%;
+        //     height: 100%;
+        //     object-fit: cover; /* Đảm bảo ảnh phủ đầy vùng */
+        //     border-radius: 8px; /* Tùy chọn, để bo góc */
+        // }
+        .addnew {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid gray;
+            padding: 10px;
+        }
+
+        ion-card {
+            position: relative;
+            height: 80px;
+            ion-button {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+            }
+        }
+    }
+}
