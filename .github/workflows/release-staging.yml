@@ -7,7 +7,7 @@ on:
     - main
 env:
   AWS_REGION : "us-east-1"
-  ASSUME_ROLE: "arn:aws:iam::982534355639:role/GitHubAction-AssumeRoleWithAction"
+  ASSUME_ROLE: ${{ secrets.ASSUME_ROLE_S3_BUCKET_LOUIS_20251225 }}
   tf_version: 1.10.2
   tg_version: 0.69.13
   # working_dir: terragrunt/c7stream
