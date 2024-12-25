@@ -1,0 +1,56 @@
+# Sample workflow to access AWS resources when workflow is tied to branch
+# The workflow Creates static website using aws s3
+name: Deploy Web Staging
+on:
+  push:
+    branches:
+    - deploy_staging
+env:
+  AWS_REGION : "us-east-1"
+  ASSUME_ROLE: "arn:aws:iam::982534355639:role/GitHubAction-AssumeRoleWithAction"
+  tf_version: 1.10.2
+  tg_version: 0.69.13
+  # working_dir: terragrunt/c7stream
+  TERRAGRUNT_LOG_LEVEL: info
+  TERRAGRUNT_INCLUDE_EXTERNAL_DEPENDENCIES: true
+  TERRAGRUNT_PROVIDER_CACHE: true
+  S3_HOST_BUCKET: "louis-20251225"
+  TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
+  CHAT_ID: "1103423004"
+  
+# permission can be added at job level or workflow level
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+jobs:
+  DeployC7Stg:
+    runs-on: ubuntu-24.04
+    steps: 
+      # Stage: Clone repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+        # Stage: Install Node.js
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Stage: Build
+      - name: Install and Build
+        run: |
+          npm i --save-dev @types/node
+          npm install
+          npm update
+          npm run build
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ASSUME_ROLE }}
+          role-session-name: GitHubActions-${{ github.ref_name }}-${{ github.run_number }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Deploy to s3
+        run: |
+          aws s3 sync dist s3://${{ env.S3_HOST_BUCKET }}/ --quiet
