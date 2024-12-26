@@ -8,12 +8,6 @@ on:
 env:
   AWS_REGION : "us-east-1"
   ASSUME_ROLE: ${{ secrets.ASSUME_ROLE_S3_BUCKET_LOUIS_20251225 }}
-  tf_version: 1.10.2
-  tg_version: 0.69.13
-  # working_dir: terragrunt/c7stream
-  TERRAGRUNT_LOG_LEVEL: info
-  TERRAGRUNT_INCLUDE_EXTERNAL_DEPENDENCIES: true
-  TERRAGRUNT_PROVIDER_CACHE: true
   S3_HOST_BUCKET: "louis-20251225"
   TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
   CHAT_ID: "1103423004"
