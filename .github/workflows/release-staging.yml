@@ -4,7 +4,7 @@ name: Deploy Web Production
 on:
   push:
     branches:
-    - main
+    - build-app-ios
 env:
   AWS_REGION : "us-east-1"
   ASSUME_ROLE: ${{ secrets.ASSUME_ROLE_S3_BUCKET_LOUIS_20251225 }}
@@ -18,7 +18,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 jobs:
   DeployAppPro:
-    runs-on: ubuntu-24.04
+    runs-on: macos-latest
     steps: 
       # Stage: Clone repository
       - name: Checkout Code
@@ -37,6 +37,8 @@ jobs:
           npm install
           npm update
           npm run build
+          
+      - name: 
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
