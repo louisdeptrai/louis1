@@ -22,11 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       output1: ${{ steps.step1.outputs.test }}
-    steps: 
+    steps:
       - name: set env 
         env: 
-          var1 : "van lay duoc id nay"
-          
+          var1 : "van lay duoc id na ádasd ád y"
+        run: echo "hello 1"
+
       - name: haha
         id: step1
         run: echo "test=${{ env.var1 }}" >> "$GITHUB_OUTPUT"
