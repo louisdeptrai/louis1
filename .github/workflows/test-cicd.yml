@@ -35,9 +35,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: test1
-        env: 
+        env:
           output1: ${{ needs.jobA.outputs.output1 }}
         run: echo "$output1"
       - name: test2
@@ -46,4 +46,4 @@ jobs:
           echo "Branch: ${GITHUB_REF#refs/heads/}"
           echo "Commit: ${GITHUB_SHA}"
           echo "Author: ${GITHUB_ACTOR}"
-          echo "message: $commit_message"
+          echo "message: $env.commit_message"
