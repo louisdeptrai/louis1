@@ -38,6 +38,8 @@ jobs:
         run: echo "$output1"
       - name: test2
         run: |
+          echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
           echo "Branch: ${GITHUB_REF#refs/heads/}"
           echo "Commit: ${GITHUB_SHA}"
           echo "Author: ${GITHUB_ACTOR}"
+          echo "message: $commit_message"
