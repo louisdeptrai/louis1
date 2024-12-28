@@ -36,3 +36,8 @@ jobs:
       - env: 
           output1: ${{ needs.jobA.outputs.output1 }}
         run: echo "$output1"
+      - name: test2
+        run: |
+          echo "Branch: ${GITHUB_REF#refs/heads/}"
+          echo "Commit: ${GITHUB_SHA}"
+          echo "Author: ${GITHUB_ACTOR}"
