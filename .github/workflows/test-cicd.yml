@@ -46,4 +46,4 @@ jobs:
           echo "Branch: ${GITHUB_REF#refs/heads/}"
           echo "Commit: ${GITHUB_SHA}"
           echo "Author: ${GITHUB_ACTOR}"
-          echo "message: $env.commit_message"
+          echo "message: ${{env.commit_message}}"
