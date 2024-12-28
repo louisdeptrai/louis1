@@ -24,13 +24,11 @@ jobs:
       output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: set env 
-        env: 
-          var1 : "van lay duoc id na ádasd ád y"
-        run: echo "hello 1"
+        run: echo "var1=hahaha" >> $GITHUB_ENV
 
       - name: haha
         id: step1
-        run: echo "test=${env.var1}" >> "$GITHUB_OUTPUT"
+        run: echo "test=$env.var1" >> "$GITHUB_OUTPUT"
 
   jobB: 
     name: jobB
