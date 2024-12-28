@@ -28,7 +28,7 @@ jobs:
 
       - name: haha
         id: step1
-        run: echo "test=$env.var1" >> "$GITHUB_OUTPUT"
+        run: echo "test=${{ env.var1 }}" >> "$GITHUB_OUTPUT"
 
   jobB: 
     name: jobB
