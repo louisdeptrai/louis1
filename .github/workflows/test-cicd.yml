@@ -23,9 +23,9 @@ jobs:
     outputs: 
       output1: ${{ steps.step1.outputs.test }}
     steps: 
+      - id: step1
       - env: 
           var1 : "Louis dep trai"
-      - id: step1
         run: echo "test=$var1" >> "$GITHUB_OUTPUT"
 
   jobB: 
