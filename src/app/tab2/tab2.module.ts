@@ -7,6 +7,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { UsersModule } from '../components/users/users.module';
+import { CategoriesComponent } from '../components/categories/categories.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { UsersModule } from '../components/users/users.module';
     FormsModule,
     ExploreContainerComponentModule,
     Tab2PageRoutingModule,
-    UsersModule
+    UsersModule,
+    CategoriesComponent
   ],
   declarations: [Tab2Page]
 })

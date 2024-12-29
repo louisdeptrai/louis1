@@ -1,5 +1,7 @@
+import { capSQLiteVersionUpgrade } from "@capacitor-community/sqlite";
+
 export class UserUpgradeStatements {
-    userUpgrades = [
+    userUpgrades: capSQLiteVersionUpgrade[] = [
         {
             toVersion: 1,
             statements: [
@@ -10,13 +12,17 @@ export class UserUpgradeStatements {
             );`
             ]
         },
-        /* add new statements below for next database version when required*/
-        
         {
-        toVersion: 2,
-        statements: [
-            `ALTER TABLE users ADD COLUMN email TEXT;`,
-        ]
+            toVersion: 2,
+            statements: [
+                `ALTER TABLE users ADD COLUMN email TEXT;`,
+            ]
         },
+        {
+            toVersion: 3,
+            statements: [
+                `ALTER TABLE users ADD COLUMN age INTEGER;`,
+            ]
+        }
     ]
 }

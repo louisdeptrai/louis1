@@ -5,6 +5,8 @@ import { UserUpgradeStatements } from '../_upgrades/user.upgrade.statements';
 import { SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { SQLiteService } from './sqlite.service';
 import { DbnameVersionService } from './dbname-version.service';
+import { CategoryUpgradeStatements } from '../_upgrades/category.upgrade.statements';
+import { Upgrade } from '../_models/upgrade';
 
 @Injectable({
   providedIn: 'root'
@@ -13,32 +15,61 @@ export class StoreService {
   public userList: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   private databaseName: string = "";
   private uUpdStmts: UserUpgradeStatements = new UserUpgradeStatements();
-  private versionUpgrades: any;
+  private categoryUpdateStmts: CategoryUpgradeStatements = new CategoryUpgradeStatements();
+  // private versionUpgrades: any;
   private loadToVersion: any;
+  private allUpdate: any;
   private db!: SQLiteDBConnection;
   private isUserReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private sqliteService: SQLiteService,
     private dbVerService: DbnameVersionService
-  ) { 
-    this.versionUpgrades = this.uUpdStmts.userUpgrades;
-    this.loadToVersion = this.versionUpgrades[this.versionUpgrades.length - 1].toVersion;
+  ) {
+    // this.versionUpgrades = this.uUpdStmts.userUpgrades;
+    // this.loadToVersion = this.versionUpgrades[this.versionUpgrades.length - 1].toVersion;
+
   }
   async initializeDatabase(dbName: string) {
     this.databaseName = dbName;
+    const userUpgrades = this.uUpdStmts.userUpgrades;
+    const categoryUpgrades = this.categoryUpdateStmts.categoryUpgrades;
+    this.allUpdate = [
+      ...new UserUpgradeStatements().userUpgrades,
+      ...new CategoryUpgradeStatements().categoryUpgrades
+    ];
+
+    console.log("all update: ", this.allUpdate);
+    this.loadToVersion = Math.max(...this.allUpdate.map((u: Upgrade) => u.toVersion));
+    console.log("version: ", this.loadToVersion);
 
     // create upgrade stament
     await this.sqliteService
       .addUpgradeStatement({
         database: this.databaseName,
-        upgrade: this.versionUpgrades
+        upgrade: userUpgrades
+      });
+
+    await this.sqliteService
+      .addUpgradeStatement({
+        database: this.databaseName,
+        upgrade: categoryUpgrades
       });
 
     // create and / or open the database;
-    this.db = await this.sqliteService.openDatabase(this.databaseName, false, 'no-encryption', this.loadToVersion, false);
+    this.db = await this.sqliteService.openDatabase(this.databaseName,
+      false,
+      'no-encryption',
+      this.loadToVersion,
+      false
+    );
+
     this.dbVerService.set(this.databaseName, this.loadToVersion);
-    // await this.getUsers();
+    await this.getUsers();
+    
   }
+
+
+
 
   // Current database state
   userState() {
@@ -55,19 +86,19 @@ export class StoreService {
   }
 
 
-   // CRUD Operations
-   async getUsers() {
+  // CRUD Operations
+  async getUsers() {
     await this.loadUsers();
     this.isUserReady.next(true);
-   }
+  }
 
-   async addUser(name: string) {
-    const sql = `INSERT INTO users (name) VALUES (?);`;
-    await this.db.run(sql, [name]);
+  async addUser(name: string, email: string) {
+    const sql = `INSERT INTO users (name, email) VALUES (?,?);`;
+    await this.db.run(sql, [name, email]);
     await this.getUsers();
-   }
+  }
 
-   async updateUserById(id: string, active: number) {
+  async updateUserById(id: string, active: number) {
     const sql = `UPDATE users SET active=${active} WHERE id=${id}`;
     await this.db.run(sql);
     await this.getUsers();
