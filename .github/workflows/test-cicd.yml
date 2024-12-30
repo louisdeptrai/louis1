@@ -23,24 +23,37 @@ jobs:
     outputs: 
       output1: ${{ steps.step1.outputs.test }}
     steps:
-      - name: set env 
-        run: echo "var1=hahaha" >> $GITHUB_ENV
+      # - name: set env 
+      #   run: echo "var1=hahaha" >> $GITHUB_ENV
+
+      - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        with:
+          credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+          instance: ${{ secrets.SECRET_STORE_INSTANCE }}
 
       - name: haha
         id: step1
-        run: echo "test=${{ env.AWS_REGION }}" >> "$GITHUB_OUTPUT"
+        shell: bash
+        run: |
+          SECRET_HANDLE=$(secret-store store-secret "${{ env.AWS_REGION }}")
+          echo "test=$SECRET_HANDLE" >> "$GITHUB_OUTPUT"
 
   jobB: 
     name: jobB
     runs-on: ubuntu-latest
     needs: jobA
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        with:
+          credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+          instance: ${{ secrets.SECRET_STORE_INSTANCE }}
 
       - name: Get output
-        env:
-          output1: ${{ needs.jobA.outputs.output1 }}
-        run: echo "$output1"
+        shell: bash
+        run: |
+          SECRET_HANDLE="${{ needs.jobA.outputs.output1 }}"
+          RETRIEVED_SECRET=$(secret-store retrieve-secret "$SECRET_HANDLE")
+          echo "::add-mask::$RETRIEVED_SECRET"
+          echo "We retrieved our masked secret: $RETRIEVED_SECRET"
 
     
