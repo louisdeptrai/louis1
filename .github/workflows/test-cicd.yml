@@ -1,6 +1,6 @@
 # Sample workflow to access AWS resources when workflow is tied to branch
 # The workflow Creates static website using aws s3
-name: Deploy Web Production
+name: Test Cicd
 on:
   push:
     branches:
@@ -38,22 +38,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: test1
+      - name: Get output
         env:
           output1: ${{ needs.jobA.outputs.output1 }}
         run: echo "$output1"
 
-      - name: test2
-        run: |
-          echo "Branch: ${GITHUB_REF#refs/heads/}"
-          echo "Commit: ${GITHUB_SHA}"
-          echo "Author: ${GITHUB_ACTOR}"
-
-      - name: Save last commit message as variable
-        id: get_commit_message
-        run: |
-          echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
-
-      - name: Display commit message
-        run: |
-          echo "Last Commit Message: ${{ env.commit_message }}"
+    
