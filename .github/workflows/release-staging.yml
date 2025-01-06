@@ -11,40 +11,13 @@ env:
   S3_HOST_BUCKET: "louis-20251225"
   TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
   CHAT_ID: "1103423004"
-  
-# permission can be added at job level or workflow level
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+
 jobs:
   DeployAppPro:
-    runs-on: ubuntu-24.04
-    steps: 
-      # Stage: Clone repository
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-        # Stage: Install Node.js
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      # Stage: Build
-      - name: Install and Build
-        run: |
-          npm i --save-dev @types/node
-          npm install
-          npm update
-          npm run build
-      
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.ASSUME_ROLE }}
-          role-session-name: GitHubActions-${{ github.ref_name }}-${{ github.run_number }}
-          aws-region: ${{ env.AWS_REGION }}
-      
-      - name: Deploy to s3
-        run: |
-          aws s3 sync www s3://${{ env.S3_HOST_BUCKET }}/ --quiet
+    uses: louisvo68/.github/blob/main/.github/workflows/release_fe.yml@main
+    with:
+      AWS_REGION: ${{ env.AWS_REGION }}
+      ASSUME_ROLE:  ${{ env.ASSUME_ROLE }}
+      S3_HOST_BUCKET: ${{ env.S3_HOST_BUCKET }}
+      TOKEN_TELE:  ${{ env.TOKEN_TELE }}
+      CHAT_ID: ${{ env.CHAT_ID }}
