@@ -7,16 +7,15 @@ on:
     - main
 env:
   AWS_REGION : "us-east-1"
-  ASSUME_ROLE: ${{ secrets.ASSUME_ROLE_S3_BUCKET_LOUIS_20251225 }}
   S3_HOST_BUCKET: "louis-20251225"
-  TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
+  # TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
   CHAT_ID: "1103423004"
 
 # permission can be added at job level or workflow level
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
-  
+
 jobs:
   DeployAppPro:
     uses: louisvo68/.github/.github/workflows/release_fe.yml@main
@@ -24,5 +23,7 @@ jobs:
       AWS_REGION: ${{ env.AWS_REGION }}
       ASSUME_ROLE:  ${{ env.ASSUME_ROLE }}
       S3_HOST_BUCKET: ${{ env.S3_HOST_BUCKET }}
-      TOKEN_TELE:  ${{ env.TOKEN_TELE }}
       CHAT_ID: ${{ env.CHAT_ID }}
+    secrets: 
+      TOKEN_TELE:  ${{ secrets.TOKEN_TELE }}
+      ASSUME_ROLE: ${{ secrets.ASSUME_ROLE_S3_BUCKET_LOUIS_20251225 }}
