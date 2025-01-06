@@ -14,7 +14,7 @@ env:
 
 jobs:
   DeployAppPro:
-    uses: github.com/louisvo68/.github/blob/main/.github/workflows/release_fe.yml@main
+    uses: louisvo68/.github/.github/workflows/release_fe.yml@main
     with:
       AWS_REGION: ${{ env.AWS_REGION }}
       ASSUME_ROLE:  ${{ env.ASSUME_ROLE }}
