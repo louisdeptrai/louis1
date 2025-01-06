@@ -12,6 +12,11 @@ env:
   TOKEN_TELE: "7979881519:AAGm6zdb48nskdlouW1sjtLCwXUhGi7uEig"
   CHAT_ID: "1103423004"
 
+# permission can be added at job level or workflow level
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  
 jobs:
   DeployAppPro:
     uses: louisvo68/.github/.github/workflows/release_fe.yml@main
